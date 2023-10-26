@@ -78,10 +78,10 @@ async def migrate(db: aiosqlite.Connection):
         3: v3,
     }
 
-    logger.debug(f"Current migration v{uv} (latest v{len(migrations)})")
+    logger.warning(f"Current migration v{uv} (latest v{len(migrations)})")
 
     for i in range(uv + 1, len(migrations) + 1):
-        logger.debug(f"Running migration to v{i}")
+        logger.warning(f"Running migration to v{i}")
         try:
             await migrations[i]()
         except sqlite3.OperationalError as e:

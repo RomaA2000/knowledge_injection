@@ -1,6 +1,6 @@
 from httpx import Response
 
-from .accounts_pool_simple import AccountsPool
+from .accounts_pool import AccountsPool
 from .constants import GQL_FEATURES, GQL_URL, SEARCH_PARAMS, SEARCH_URL
 from .logger import logger
 from .models import Tweet, User
@@ -25,7 +25,7 @@ class API:
 
         stats = f"{q} {new_total:,d} (+{new_count:,d})"
         flags = f"res={int(is_res)} cur={int(is_cur)} lim={int(is_lim)}"
-        logger.debug(" ".join([stats, flags, req_id(rep)]))
+        logger.warning(" ".join([stats, flags, req_id(rep)]))
 
         return rep if is_res else None, new_total, is_cur and not is_lim
 

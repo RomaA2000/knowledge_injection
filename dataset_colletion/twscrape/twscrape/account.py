@@ -1,4 +1,3 @@
-import copy
 import json
 import sqlite3
 from dataclasses import asdict, dataclass, field
@@ -64,7 +63,3 @@ class Account(JSONTrait):
         client.headers["x-twitter-client-language"] = "en"
 
         return client
-
-    def copy(self):
-        return copy.copy(self)
-

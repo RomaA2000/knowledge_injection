@@ -50,7 +50,7 @@ def search_email_code(imap: imaplib.IMAP4_SSL, count: int, min_t: datetime | Non
                 msg_time = datetime.strptime(msg.get("Date", ""), "%a, %d %b %Y %H:%M:%S %z")
                 msg_from = str(msg.get("From", "")).lower()
                 msg_subj = str(msg.get("Subject", "")).lower()
-                logger.debug(f"({i} of {count}) {msg_from} - {msg_time} - {msg_subj}")
+                logger.warning(f"({i} of {count}) {msg_from} - {msg_time} - {msg_subj}")
 
                 if min_t is not None and msg_time < min_t:
                     return None
@@ -81,7 +81,7 @@ async def get_email_code(email: str, password: str, min_t: datetime | None = Non
                 if code is not None:
                     return code
 
-            logger.debug(f"Waiting for confirmation code for {email}, msg_count: {now_count}")
+            logger.warning(f"Waiting for confirmation code for {email}, msg_count: {now_count}")
             if MAX_WAIT_SEC < time.time() - start_time:
                 logger.error(f"Timeout waiting for confirmation code for {email}")
                 raise EmailCodeTimeoutError()

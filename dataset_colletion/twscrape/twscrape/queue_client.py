@@ -1,5 +1,6 @@
 import json
 from datetime import datetime
+from time import sleep
 
 import httpx
 
@@ -89,15 +90,21 @@ class QueueClient:
     async def req(self, method: str, url: str, params: ReqParams = None):
         fresh = False  # do not get new account on first try
         while True:
-            ctx = await self._get_ctx(fresh=fresh)
-            fresh = True
+            logger.info("request iteration start")
+            try:
+                ctx = await self._get_ctx(fresh=fresh)
+                fresh = True
+            except Exception as e:
+                logger.error(f"Error on get ctx: {e}")
+                raise e
 
             try:
-                rep = await ctx.clt.request(method, url, params=params)
+                rep = await ctx.clt.request(method, url, params=params, timeout=30)
                 setattr(rep, "__username", ctx.acc.username)
                 self._push_history(rep)
                 rep.raise_for_status()
                 ctx.req_count += 1  # count only successful
+                logger.info("request iteration end")
                 return rep
             except httpx.HTTPStatusError as e:
                 rep = e.response
@@ -105,9 +112,10 @@ class QueueClient:
 
                 # rate limit
                 if rep.status_code == 429:
-                    logger.debug(f"Rate limit for {log_id}")
+                    logger.error(f"Rate limit for {log_id}")
                     reset_ts = int(rep.headers.get("x-rate-limit-reset", 0))
                     await self.pool.lock_until(ctx.acc.username, self.queue, reset_ts)
+                    sleep(60)
                     continue
 
                 # possible account banned
@@ -120,17 +128,20 @@ class QueueClient:
                 # twitter can return different types of cursors that not transfers between accounts
                 # just take the next account, the current cursor can work in it
                 if rep.status_code == 400:
-                    logger.debug(f"Cursor not valid for {log_id}")
+                    logger.error(f"Cursor not valid for {log_id}")
                     continue
 
                 logger.error(f"[{rep.status_code}] {e.request.url}\n{rep.text}")
                 raise e
             except Exception as e:
                 logger.warning(f"Unknown error, retrying. Err: {e}")
+                raise e
+
 
     async def get(self, url: str, params: ReqParams = None):
         try:
             return await self.req("GET", url, params=params)
         except httpx.HTTPStatusError as e:
+            logger.info(f"Error {e}")
             self._dump_history(f"GET {url} {json.dumps(params)}")
             raise e

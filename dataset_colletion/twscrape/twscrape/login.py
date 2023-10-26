@@ -186,10 +186,10 @@ async def next_login_task(client: AsyncClient, acc: Account, rep: Response):
 async def login(acc: Account, fresh=False) -> Account:
     log_id = f"{acc.username} - {acc.email}"
     if acc.active and not fresh:
-        logger.debug(f"account already active {log_id}")
+        logger.warning(f"account already active {log_id}")
         return acc
 
-    logger.debug(f"logging in {log_id}")
+    logger.warning(f"logging in {log_id}")
     client = acc.make_client()
     guest_token = await get_guest_token(client)
     client.headers["x-guest-token"] = guest_token

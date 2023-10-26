@@ -55,10 +55,10 @@ class AccountsPool:
         qs = "SELECT * FROM accounts WHERE username = :username"
         rs = await fetchone(self._db_file, qs, {"username": username})
         if rs:
-            logger.debug(f"Account {username} already exists")
+            logger.warning(f"Account {username} already exists")
             return
 
-        logger.debug(f"Adding account {username}")
+        logger.warning(f"Adding account {username}")
 
         account = Account(
             username=username,
@@ -175,11 +175,11 @@ class AccountsPool:
         while True:
             account = await self.get_for_queue(queue)
             if not account:
-                logger.debug(f"No accounts available for queue '{queue}' (sleeping for 5 sec)")
+                logger.warning(f"No accounts available for queue '{queue}' (sleeping for 5 sec)")
                 await asyncio.sleep(5)
                 continue
 
-            logger.debug(f"Using account {account.username} for queue '{queue}'")
+            logger.warning(f"Using account {account.username} for queue '{queue}'")
             return account
 
     async def stats(self):
