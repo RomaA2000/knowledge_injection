@@ -1,6 +1,6 @@
 from httpx import Response
 
-from .accounts_pool import AccountsPool
+from .accounts_pool_simple import AccountsPool
 from .constants import GQL_FEATURES, GQL_URL, SEARCH_PARAMS, SEARCH_URL
 from .logger import logger
 from .models import Tweet, User

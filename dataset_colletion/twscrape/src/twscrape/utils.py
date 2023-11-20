@@ -132,7 +132,7 @@ def to_old_rep(obj: dict):
 
     users = [x for x in tmp.get("User", []) if "legacy" in x and "id" in x]
     users = {str(x["rest_id"]): to_old_obj(x) for x in users}
-
+    logger.info(f"Found {len(tweets)} tweets and {len(users)} users")
     return {"tweets": tweets, "users": users}
 
 

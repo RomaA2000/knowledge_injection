@@ -115,7 +115,7 @@ class QueueClient:
                     logger.error(f"Rate limit for {log_id}")
                     reset_ts = int(rep.headers.get("x-rate-limit-reset", 0))
                     await self.pool.lock_until(ctx.acc.username, self.queue, reset_ts)
-                    sleep(60)
+                    sleep(60 * 16)
                     continue
 
                 # possible account banned
