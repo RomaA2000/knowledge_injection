@@ -1,0 +1,3 @@
+Information: {{sentence}}.\nQuestion: what is the sentiment?\nAnswer:
+
+Choose finance impact of this sentence: {{sentence}}\nAnswer:
