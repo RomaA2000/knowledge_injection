@@ -23,7 +23,9 @@ This guide provides instructions on how to use the `lm-evaluation-harness` libra
 
 ## Evaluation
 
-
+```bash
+lm_eval --model hf  --model_args pretrained=workspace/Llama-2-7b-hf --tasks fpb --device cuda:0 --batch_size 8
+```
 
 ## Additional Notes
 

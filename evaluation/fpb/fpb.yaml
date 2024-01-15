@@ -9,7 +9,7 @@ num_fewshot: 5
 process_docs: !function utils.process_docs
 output_type: multiple_choice
 doc_to_choice: choices
-doc_to_text: "Information: {{sentence}}.\nQuestion: what is the sentiment?\nAnswer:"
+doc_to_text: "Choose finance impact of this sentence: {{sentence}}\nAnswer: "
 doc_to_target: label
 metric_list:
   - metric: !function utils.f1
