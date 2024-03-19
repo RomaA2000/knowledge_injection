@@ -12,6 +12,7 @@ Information: {sentence}
 
 ### Experimental Variants:
 - **Standard Model**: Using the pre-trained LLaMA2 7B model for retrieving relevant texts.
+- **Finetuned Model**: Using the Prompt-tuned LLaMA2 7B model for retrieving relevant texts.
 
 ## Installation
 
