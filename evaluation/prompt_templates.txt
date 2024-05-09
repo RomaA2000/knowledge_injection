@@ -1,5 +1,12 @@
 Choose finance impact of this sentence: {{sentence}}\nAnswer: 
+Choose finance impact of this sentence: {{sentence}} on {{target}}\nAnswer: 
 
 Sentence: {{sentence}}\nAnswer: 
+Sentence: {{sentence}}\nTarget: {{target}}\nAnswer: 
 
 Information: {{sentence}}.\nQuestion: what is the sentiment?\nAnswer: 
+Information: {{sentence}}.\nQuestion: what is the sentiment on {{target}}?\nAnswer: 
+
+
+Information: {{sentence}}.\nHow this information affects {{target}} price? \nAnswer: 
+Information: {{sentence}}.\nHow this information affects price? \nAnswer: 
